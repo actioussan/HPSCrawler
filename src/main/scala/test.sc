@@ -8,4 +8,4 @@ class URLInterpreter extends Interpreter {
 }
 
 var myInterpreter = new URLInterpreter
-myInterpreter.run(CrawlerString("http://www.google.com/"))
+myInterpreter.run(CrawlerString("http://www.spiegel.de/"))
