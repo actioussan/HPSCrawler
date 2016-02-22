@@ -1,11 +1,10 @@
+import core._
+import ext.{HTTPSourceAccessor, FileSourceAccessor}
+
 var test = new GenCrawler
 
-class URLInterpreter extends Interpreter {
-  def run(in: CrawlerVariable) = in match {
-    case CrawlerString(url) => CrawlerString(scala.io.Source.fromURL(url).mkString)
-    case _ => None
-  }
-}
+var myInterpreter = new SourceInterpreter(new FileSourceAccessor())
+test.addInterpreter(myInterpreter, CrawlerString("C:\\LMU\\Scala\\project\\HPSCrawler\\build.sbt"))
+test.addInterpreter(new SourceInterpreter(new HTTPSourceAccessor()), CrawlerString("http://www.google.com/"))
 
-var myInterpreter = new URLInterpreter
-myInterpreter.run(CrawlerString("http://www.spiegel.de/"))
+test.run()
