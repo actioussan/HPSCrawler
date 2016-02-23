@@ -1,8 +1,15 @@
 package ext.Interpreters
 
+import org.json4s._
+import org.json4s.native.JsonMethods._
 
-import core.{CrawlerVariable, Interpreter}
+import core.{EmptyVariable, CrawlerString, CrawlerVariable, Interpreter}
+
+case class CrawlerJsonAST(json : JValue) extends CrawlerVariable
 
 class JsonInterpreter extends Interpreter {
-  def run(in : CrawlerVariable) = ???
+  def run(in : CrawlerVariable) = in match {
+    case CrawlerString(s) => CrawlerJsonAST(parse(s))
+    case _ => EmptyVariable
+  }
 }
