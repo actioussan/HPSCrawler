@@ -1,12 +1,16 @@
 package ext.Interpreters
 
-import core.{SourceAccessor, CrawlerVariable, Interpreter}
+import core._
 import scala.xml._
 
-class XmlInterpreter(acc : SourceAccessor) extends Interpreter {
+case class CrawlerXmlValue(xml: Elem) extends CrawlerVariable
+
+class XmlInterpreter extends Interpreter {
   def run(in : CrawlerVariable) = {
-    var out = acc.access(in) // XMLString
-    // Umwandeln zu XMLObject
-    var xml = XML.loadString(out)
+    in match {
+        case CrawlerString(out) => CrawlerXmlValue(XML.loadString(out))
+        case _ => EmptyVariable
+    }
+
   }
 }
