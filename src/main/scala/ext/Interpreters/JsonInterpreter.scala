@@ -8,7 +8,7 @@ import core.{EmptyVariable, CrawlerString, CrawlerVariable, Interpreter}
 case class CrawlerJsonValue(json : JValue) extends CrawlerVariable
 
 class JsonInterpreter extends Interpreter {
-  def run(in : CrawlerVariable) = in match {
+  def resolve = {
     case CrawlerString(s) => CrawlerJsonValue(parse(s))
     case _ => EmptyVariable
   }

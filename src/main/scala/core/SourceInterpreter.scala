@@ -5,18 +5,28 @@ import scala.collection.mutable.{Map, HashMap}
 class SourceInterpreter(acc : SourceAccessor, useCache : Boolean = false) extends Interpreter {
   val cache : Map[CrawlerVariable, CrawlerVariable] = new HashMap[CrawlerVariable, CrawlerVariable]()
 
-  def run(in: CrawlerVariable) = {
-    if(useCache && cache.contains(in)) {
-      cache.get(in) match {
-        case Some(out) => out
-        case _ => EmptyVariable
+  def resolve = new PartialFunction[CrawlerVariable,CrawlerVariable] {
+    def apply(in:CrawlerVariable) : CrawlerVariable = {
+      if (useCache && cache.contains(in)) {
+        cache.get(in) match {
+          case Some(out) => out
+          case _ => EmptyVariable
+        }
+      } else {
+        val out : CrawlerVariable = acc.access(in)
+        if (useCache) {
+          cache.put(in, out)
+        }
+        out
       }
-    } else {
-      val out : CrawlerVariable = acc.access(in)
-      if(useCache) {
-        cache.put(in, out)
+    }
+
+    def isDefinedAt(in: CrawlerVariable): Boolean = {
+      if (useCache && cache.contains(in)) {
+        true
+      } else {
+        acc.access.isDefinedAt(in)
       }
-      out
     }
   }
 }

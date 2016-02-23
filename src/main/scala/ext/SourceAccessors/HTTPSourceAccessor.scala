@@ -1,9 +1,9 @@
 package ext.SourceAccessors
 
-import core.{CrawlerString, CrawlerVariable, SourceAccessor}
+import core.{CrawlerString, SourceAccessor}
 
 case class HttpSourceAccessor() extends SourceAccessor {
-  def access(in:CrawlerVariable) = in match {
+  def access = {
     case CrawlerString(url) => CrawlerString(scala.io.Source.fromURL(url).mkString)
   }
 }

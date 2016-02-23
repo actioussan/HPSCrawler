@@ -1,5 +1,5 @@
 package core
 
 abstract class SourceAccessor {
-  def access(in: CrawlerVariable): CrawlerVariable
+  def access: PartialFunction[CrawlerVariable, CrawlerVariable]
 }
