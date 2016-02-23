@@ -5,11 +5,11 @@ import org.json4s.native.JsonMethods._
 
 import core.{EmptyVariable, CrawlerString, CrawlerVariable, Interpreter}
 
-case class CrawlerJsonAST(json : JValue) extends CrawlerVariable
+case class CrawlerJsonValue(json : JValue) extends CrawlerVariable
 
 class JsonInterpreter extends Interpreter {
   def run(in : CrawlerVariable) = in match {
-    case CrawlerString(s) => CrawlerJsonAST(parse(s))
+    case CrawlerString(s) => CrawlerJsonValue(parse(s))
     case _ => EmptyVariable
   }
 }
