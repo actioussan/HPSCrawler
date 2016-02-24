@@ -17,7 +17,6 @@
       <sourceFolder url="file://$MODULE_DIR$/../../target/scala-2.11/resource_managed/main" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/../../target/scala-2.11/resource_managed/test" type="java-test-resource" />
-      <excludeFolder url="file://$MODULE_DIR$/../../target" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/resolution-cache" />
       <excludeFolder url="file://$MODULE_DIR$/../../target/streams" />
     </content>
@@ -33,5 +32,7 @@
     <orderEntry type="library" name="SBT: org.json4s:json4s-native_2.11:3.3.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.json4s:json4s-scalap_2.11:3.3.0:jar" level="project" />
     <orderEntry type="library" name="SBT: org.scala-lang.modules:scala-xml_2.11:1.0.5:jar" level="project" />
+    <orderEntry type="library" name="SBT: net.sourceforge.htmlcleaner:htmlcleaner:2.16:jar" level="project" />
+    <orderEntry type="library" name="SBT: org.jdom:jdom2:2.0.5:jar" level="project" />
   </component>
 </module>

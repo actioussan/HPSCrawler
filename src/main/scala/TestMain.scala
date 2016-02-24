@@ -7,7 +7,7 @@ object TestMain {
     import ext.Interpreters.XmlInterpreter
     import ext.SourceAccessors._
 
-    val url = CrawlerString("http://www.spiegel.de/")
+    val url = CrawlerString("http://mtptt.netau.net/")
     var test = new GenCrawler
     case class BigDocument(s : String) extends CrawlerVariable
     var myInterpreter1 = new SourceInterpreter(new FileSourceAccessor)
