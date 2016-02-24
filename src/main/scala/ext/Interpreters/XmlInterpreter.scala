@@ -1,7 +1,6 @@
 package ext.Interpreters
 
 import core._
-import scala.xml._
 import org.htmlcleaner.{TagNode, HtmlCleaner}
 
 case class CrawlerXmlValue(node: TagNode) extends CrawlerVariable
