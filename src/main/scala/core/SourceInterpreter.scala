@@ -30,3 +30,8 @@ class SourceInterpreter(acc : SourceAccessor, useCache : Boolean = false) extend
     }
   }
 }
+
+object SourceInterpreter {
+  def apply(acc : SourceAccessor) = new SourceInterpreter(acc)
+  def apply(acc : SourceAccessor, useCache : Boolean) = new SourceInterpreter(acc, useCache)
+}

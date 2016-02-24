@@ -1,5 +1,7 @@
 package core
 
+import akka.actor.Actor
+
 trait Interpreter {
   var resolvers : List[PartialFunction[CrawlerVariable, CrawlerVariable]] = List[PartialFunction[CrawlerVariable, CrawlerVariable]]()
 

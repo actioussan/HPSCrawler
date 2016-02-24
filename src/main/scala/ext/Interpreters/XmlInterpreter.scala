@@ -14,3 +14,7 @@ class XmlInterpreter extends Interpreter {
     case CrawlerString(out) => CrawlerXmlValue(cleaner.clean(out))
   }
 }
+
+object XmlInterpreter {
+  def apply = new XmlInterpreter
+}

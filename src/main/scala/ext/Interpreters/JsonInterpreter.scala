@@ -13,3 +13,7 @@ class JsonInterpreter extends Interpreter {
     case _ => EmptyVariable
   }
 }
+
+object JsonInterpreter {
+  def apply = new JsonInterpreter
+}
