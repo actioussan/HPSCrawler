@@ -13,10 +13,6 @@ class GenCrawler() {
   }
 
   def run() : List[CrawlerVariable] = {
-    var out = List[CrawlerVariable]()
-    for(interpreter <- interpreters) {
-      out = out.::(interpreter._1.run(interpreter._2))
-    }
-    out
+    for(interpreter <- interpreters) yield interpreter._1.run(interpreter._2)
   }
 }
