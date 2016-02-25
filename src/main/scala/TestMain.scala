@@ -7,10 +7,21 @@ import ext.Interpreters.RegexInterpreter
   */
 object TestMain {
   def main(args: Array[String]): Unit = {
-    val url = CrawlerString("http://mtptt.netau.net/")
+    val defaultUrl = "http://mtptt.netau.net/"
+    val url = CrawlerString(defaultUrl)
 
     val crawler = GenCrawler("UltimateCrawler")
-    val httpSourceCrawler = SourceInterpreter(HttpSourceAccessor())
+    val httpSourceCrawler = new SourceInterpreter(HttpSourceAccessor()) with VariableTransformation {
+      def transform = {
+        case CrawlerList(it) => {
+          var ret: CrawlerVariable = EmptyVariable
+          for (i <- it) i match {
+            case CrawlerString(s) => if (ret == EmptyVariable) ret = CrawlerString(s)
+          }
+          ret
+        }
+      }
+    }
     val linkInterpreter = RegexInterpreter("href=\"(.*?)\"".r, true, 1)
 
     val initialHttpCallback = crawler.addInterpreter(httpSourceCrawler, url)
@@ -18,13 +29,16 @@ object TestMain {
     val secondaryHttpCallback = crawler.addInterpreter(httpSourceCrawler, linkCallback)
 
     secondaryHttpCallback.onSuccess({
-      case CrawlerIterator(it) => for (i2 <- it) println(i2)
-      case _ => println("test")
+      case CrawlerList(it) => for (i <- it) println(i)
+      case a: CrawlerVariable => println(s"second http $a")
     })
     linkCallback.onSuccess({
-      case _ => println("test")
+      case CrawlerList(it) => for (i <- it) println(i)
+      case a: CrawlerVariable => println(s"link $a")
     })
 
     crawler.run()
+    Thread sleep 5000
+    crawler.system.terminate()
   }
 }

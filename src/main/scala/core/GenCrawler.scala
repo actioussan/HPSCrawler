@@ -10,7 +10,6 @@ import scala.collection.mutable.{Map, HashMap}
 class CrawlerActor(interpreter: Interpreter) extends Actor {
   def receive = {
     case Run(crawlerVariable, promise) => {
-      println("gotta run")
       try {
         val res = interpreter.run(crawlerVariable)
         promise.success(res)
