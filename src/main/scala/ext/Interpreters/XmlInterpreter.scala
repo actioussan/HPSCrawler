@@ -16,5 +16,5 @@ class XmlInterpreter extends Interpreter {
 }
 
 object XmlInterpreter {
-  def apply = new XmlInterpreter
+  def apply() = new XmlInterpreter
 }

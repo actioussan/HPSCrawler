@@ -15,6 +15,8 @@ class CrawlerActor(interpreter: Interpreter) extends Actor {
         promise.success(res)
       } catch {
         case e: Exception => promise.failure(e)
+      } finally {
+        sender ! FinishedInterpretation()
       }
     }
     case _ => println("unknown message")
@@ -23,23 +25,31 @@ class CrawlerActor(interpreter: Interpreter) extends Actor {
 
 class GenCrawler(crawlerName : String) {
   val system = ActorSystem(crawlerName)
+  val masterActorRef = system.actorOf(Props(new MasterActor), name = "MasterActor")
+  var openMessages: Int = 0
+  var actorNameCount: Int = 0
 
-  var imidiateActorList : List[(ActorRef, CrawlerVariable, Promise[CrawlerVariable])] = List[(ActorRef, CrawlerVariable, Promise[CrawlerVariable])]()
+  var immediateActorList : List[(ActorRef, CrawlerVariable, Promise[CrawlerVariable])] = List[(ActorRef, CrawlerVariable, Promise[CrawlerVariable])]()
 
   def addInterpreter(interpreter: Interpreter, v : CrawlerVariable) : FutureWrapper[CrawlerVariable] = {
     // MAYBE: check if list already contains element
     val prom = Promise[CrawlerVariable]
-    val curActor = system.actorOf(Props(new CrawlerActor(interpreter))/*, name = interpreter.toString*/)
-    imidiateActorList = imidiateActorList.::((curActor, v, prom))
+    actorNameCount += 1
+    val curActor = system.actorOf(Props(new CrawlerActor(interpreter)), name = s"CrawlerActor$actorNameCount")
+    immediateActorList = immediateActorList.::((curActor, v, prom))
     new FutureWrapper[CrawlerVariable](prom.future)
   }
 
   def addInterpreter(interpreter: Interpreter, v : FutureWrapper[CrawlerVariable]) : FutureWrapper[CrawlerVariable] = {
     // MAYBE: check if list already contains element
     val prom = Promise[CrawlerVariable]
-    val curActor = system.actorOf(Props(new CrawlerActor(interpreter))/*, name = interpreter.toString*/)
+    actorNameCount += 1
+    val curActor = system.actorOf(Props(new CrawlerActor(interpreter)), name = s"CrawlerActor$actorNameCount")
     v.onSuccess({
-      case v: CrawlerVariable => curActor ! Run(v, prom)
+      case v: CrawlerVariable => {
+        openMessages += 1
+        masterActorRef ! Forward(curActor, v, prom)
+      }
     })
     v.onFailure({
       case t:Throwable => prom.failure(t)
@@ -49,9 +59,22 @@ class GenCrawler(crawlerName : String) {
 
   val defaultTimeout = new Timeout(5 seconds)
   def run(implicit timeout: Timeout = defaultTimeout) =  {
-    for(element <- imidiateActorList) {
-      element._1 ! Run(element._2, element._3)
+    for(element <- immediateActorList) {
+      openMessages += 1
+      masterActorRef ! Forward(element._1, element._2, element._3)
     }
+  }
+
+  def stop() = {
+    system.terminate()
+  }
+
+  def await(time: Int = 1000) = {
+    //Thread sleep 1
+    while(openMessages > 0) {
+      Thread sleep time
+    }
+    stop()
   }
 
   class FutureWrapper[+T](future: Future[T]) {
@@ -63,6 +86,18 @@ class GenCrawler(crawlerName : String) {
     }
     def onFailure[U](@deprecatedName('callback) pf: PartialFunction[Throwable, U]): Unit = {
       future.onFailure(pf)(system.dispatcher)
+    }
+  }
+
+  class MasterActor extends Actor {
+    def receive = {
+      case Forward(ref, crawlerVariable, promise) => {
+        ref ! Run(crawlerVariable, promise)
+      }
+      case FinishedInterpretation() => {
+        openMessages -= 1
+      }
+      case _ => println("unknown message")
     }
   }
 }

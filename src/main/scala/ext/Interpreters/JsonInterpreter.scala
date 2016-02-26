@@ -15,5 +15,5 @@ class JsonInterpreter extends Interpreter {
 }
 
 object JsonInterpreter {
-  def apply = new JsonInterpreter
+  def apply() = new JsonInterpreter
 }

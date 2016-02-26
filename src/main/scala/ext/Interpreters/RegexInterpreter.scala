@@ -11,7 +11,6 @@ class RegexInterpreter(pattern: Regex, matchAll: Boolean, groupNum: Int = 0) ext
         val data = (pattern findAllIn out).matchData
         var ret = List[CrawlerVariable]()
         for(i <- data) {
-          println(i group Math.max(groupNum, maxGroupNum))
           ret = CrawlerString(i group Math.max(groupNum, maxGroupNum)) :: ret
         }
         CrawlerList(ret)

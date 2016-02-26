@@ -38,7 +38,6 @@ object TestMain {
     })
 
     crawler.run()
-    Thread sleep 5000
-    crawler.system.terminate()
+    crawler.await()
   }
 }
