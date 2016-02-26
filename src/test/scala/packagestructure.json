@@ -1,0 +1,19 @@
+[
+	{
+		"package": "core",
+		"children": []
+	},
+	{
+		"package": "ext",
+		"children": [
+			{
+				"package": "Interpreters",
+				"children": []
+			},
+			{
+				"package": "SourceAccessors",
+				"children": []
+			}
+		]
+	}
+]

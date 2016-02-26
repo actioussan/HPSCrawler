@@ -1,0 +1,173 @@
+[
+	{
+		"package": "core",
+		"content": [
+			{
+				"file": "CrawlerVariable",
+				"content": [
+					{
+						"name": "CrawlerIterator",
+						"type": "class"
+					},
+					{
+						"name": "CrawlerString",
+						"type": "class"
+					},
+					{
+						"name": "CrawlerVariable",
+						"type": "trait"
+					},
+					{
+						"name": "EmptyVariable",
+						"type": "object"
+					}
+				]
+			},
+			{
+				"file": "GenCrawler",
+				"content": [
+					{
+						"name": "CrawlerActor",
+						"type": "class"
+					},
+					{
+						"name": "GenCrawler",
+						"type": "class"
+					},
+					{
+						"name": "GenCrawler",
+						"type": "object"
+					}
+				]
+			},
+			{
+				"file": "Interpreter",
+				"content": [
+					{
+						"name": "Interpreter",
+						"type": "trait"
+					}
+				]
+			},
+			{
+				"file": "InterpreterMessages",
+				"content": [
+					{
+						"name": "InterpreterMessages",
+						"type": "class"
+					},
+					{
+						"name": "Run",
+						"type": "class"
+					}
+				]
+			},
+			{
+				"file": "SourceAccessor",
+				"content": [
+					{
+						"name": "SourceAccessor",
+						"type": "class"
+					}
+				]
+			},
+			{
+				"file": "SourceInterpreter",
+				"content": [
+					{
+						"name": "SourceInterpreter",
+						"type": "class"
+					},
+					{
+						"name": "SourceInterpreter",
+						"type": "object"
+					}
+				]
+			}
+		]
+	},
+	{
+		"package": "ext",
+		"content": [
+			{
+				"package": "Interpreters",
+				"content": [
+					{
+						"file": "JsonInterpreter",
+						"content": [
+							{
+								"name": "CrawlerJsonValue",
+								"type": "class"
+							},
+							{
+								"name": "JsonInterpreter",
+								"type": "class"
+							},
+							{
+								"name": "JsonInterpreter",
+								"type": "object"
+							}
+						]
+					},
+					{
+						"file": "RegexInterpreter",
+						"content": [
+							{
+								"name": "RegexInterpreter",
+								"type": "class"
+							},
+							{
+								"name": "RegexInterpreter",
+								"type": "object"
+							}
+						]
+					},
+					{
+						"file": "XmlInterpreter",
+						"content": [
+							{
+								"name": "CrawlerXmlValue",
+								"type": "class"
+							},
+							{
+								"name": "XmlInterpreter",
+								"type": "class"
+							},
+							{
+								"name": "XmlInterpreter",
+								"type": "object"
+							}
+						]
+					}
+				]
+			},
+			{
+				"package": "SourceAccessors",
+				"content": [
+					{
+						"file": "FileSourceAccessor",
+						"content": [
+							{
+								"name": "FileSourceAccessor",
+								"type": "class"
+							},
+							{
+								"name": "FileSourceAccessor",
+								"type": "object"
+							}
+						]
+					},
+					{
+						"file": "HttpSourceAccessor",
+						"content": [
+							{
+								"name": "HttpSourceAccessor",
+								"type": "class"
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+]
