@@ -5,12 +5,12 @@ import core._
 
 class RegexInterpreter(pattern: Regex, matchAll: Boolean, groupNum: Int = 0) extends Interpreter {
   def resolve = {
-    case CrawlerString(out) => {
-      if(matchAll) {
+    case CrawlerString(out) =>
+      if (matchAll) {
         val maxGroupNum = (pattern findAllIn out).groupCount
         val data = (pattern findAllIn out).matchData
         var ret = List[CrawlerVariable]()
-        for(i <- data) {
+        for (i <- data) {
           ret = CrawlerString(i group Math.max(groupNum, maxGroupNum)) :: ret
         }
         CrawlerList(ret)
@@ -22,7 +22,6 @@ class RegexInterpreter(pattern: Regex, matchAll: Boolean, groupNum: Int = 0) ext
           case None => EmptyVariable
         }
       }
-    }
   }
 }
 

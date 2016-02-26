@@ -9,7 +9,7 @@ import scala.collection.mutable.{Map, HashMap}
 
 class CrawlerActor(interpreter: Interpreter) extends Actor {
   def receive = {
-    case Run(crawlerVariable, promise) => {
+    case Run(crawlerVariable, promise) =>
       try {
         val res = interpreter.run(crawlerVariable)
         promise.success(res)
@@ -18,7 +18,6 @@ class CrawlerActor(interpreter: Interpreter) extends Actor {
       } finally {
         sender ! FinishedInterpretation()
       }
-    }
     case _ => println("unknown message")
   }
 }
@@ -46,10 +45,9 @@ class GenCrawler(crawlerName : String) {
     actorNameCount += 1
     val curActor = system.actorOf(Props(new CrawlerActor(interpreter)), name = s"CrawlerActor$actorNameCount")
     v.onSuccess({
-      case v: CrawlerVariable => {
+      case v: CrawlerVariable =>
         openMessages += 1
         masterActorRef ! Forward(curActor, v, prom)
-      }
     })
     v.onFailure({
       case t:Throwable => prom.failure(t)
@@ -57,7 +55,7 @@ class GenCrawler(crawlerName : String) {
     new FutureWrapper[CrawlerVariable](prom.future)
   }
 
-  val defaultTimeout = new Timeout(5 seconds)
+  val defaultTimeout = new Timeout(5.seconds)
   def run(implicit timeout: Timeout = defaultTimeout) =  {
     for(element <- immediateActorList) {
       openMessages += 1
@@ -91,12 +89,8 @@ class GenCrawler(crawlerName : String) {
 
   class MasterActor extends Actor {
     def receive = {
-      case Forward(ref, crawlerVariable, promise) => {
-        ref ! Run(crawlerVariable, promise)
-      }
-      case FinishedInterpretation() => {
-        openMessages -= 1
-      }
+      case Forward(ref, crawlerVariable, promise) => ref ! Run(crawlerVariable, promise)
+      case FinishedInterpretation() => openMessages -= 1
       case _ => println("unknown message")
     }
   }
