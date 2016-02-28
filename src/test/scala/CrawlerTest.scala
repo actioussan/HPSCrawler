@@ -1,6 +1,6 @@
-import core._
-import ext.Interpreters._
-import ext.SourceAccessors.{FileSourceAccessor, HttpSourceAccessor}
+import org.lmu.GenCrawler.core._
+import org.lmu.GenCrawler.ext.Interpreters._
+import org.lmu.GenCrawler.ext.SourceAccessors.{FileSourceAccessor, HttpSourceAccessor}
 import org.scalatest._
 
 class CrawlerTest  extends FlatSpec with Matchers {
