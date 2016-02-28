@@ -23,13 +23,13 @@ object ExampleUseCase {
     val secondaryHttpCallback = crawler.addInterpreter(new SourceInterpreter(HttpSourceAccessor())
       with VariableTransformation {
       def transform = {
-        case CrawlerJsonValue(json) =>
+        case CrawlerJsonValue(jsonRootObject) =>
           var returnUrlList = List[CrawlerVariable]()
-          json \ "tracks" \ "items" match {
-            case JArray(list) =>
-              for (i <- list) {
-                i \ "album" \ "href" match {
-                  case JString(str) => returnUrlList = CrawlerString(str) :: returnUrlList
+          jsonRootObject \ "tracks" \ "items" match {
+            case JArray(jsonTrackList) =>
+              for (jsonTrackObject <- jsonTrackList) {
+                jsonTrackObject \ "album" \ "href" match {
+                  case JString(albumUrl) => returnUrlList = CrawlerString(albumUrl) :: returnUrlList
                   case _ => println("Could not find href for an album")
                 }
               }
@@ -41,13 +41,13 @@ object ExampleUseCase {
 
     // extend JsonInterpreter anonymously to interpret multiple times at once
     val secondaryJsonCallback = crawler.addInterpreter(new JsonInterpreter() {
-      override def run(in: CrawlerVariable) = {
-        in match {
-          case CrawlerList(list) =>
-            var ret = List[CrawlerVariable]()
-            for(i <- list) ret = super.run(i) :: ret
-            CrawlerList(ret)
-          case _ => super.run(in)
+      override def run(input: CrawlerVariable) = {
+        input match {
+          case CrawlerList(jsonStringList) =>
+            var returnList = List[CrawlerVariable]()
+            for(jsonString <- jsonStringList) returnList = super.run(jsonString) :: returnList
+            CrawlerList(returnList)
+          case _ => super.run(input)
         }
       }
     }, secondaryHttpCallback)
